@@ -4,22 +4,23 @@ An introduction to the basics of using Docker.
 
 ### Before you get started...
 
-1. [Install Docker on your machine.](https://docs.docker.com/engine/installation/)
-- Ubuntu
-- MascOS
+1. Install Docker on your machine.
+- [Ubuntu](0-docker-installation-ubuntu.md)
+- MacOS
 
 ### After Docker is installed
 
 ### Basic Exercises
 
-1. [Running and managing Docker containers and images](https://github.com/delner/docker-training/blob/master/exercises/basic/1-running_containers/README.md)
-2. [Changing images](https://github.com/delner/docker-training/blob/master/exercises/basic/2-changing_images/README.md)
-3. [Building your own images](https://github.com/delner/docker-training/blob/master/exercises/basic/3-building_images/README.md)
-4. [Sharing images](https://github.com/delner/docker-training/blob/master/exercises/basic/4-sharing_images/README.md)
+1. [Running and managing Docker containers and images](1-running_containers.md)
+2. [Building your own images](2-building_images.md)
+3. [Sharing images](3-sharing_images.md)
 
 
-### Docker dor BARD (https://bard-external.embl.de)
+### Docker for BARD (https://bard-external.embl.de)
 
 1. Labels
-2. Permissions                      
+2. Permissions
+3. Test image locally
+4. Deploy image to BARD                     
 
