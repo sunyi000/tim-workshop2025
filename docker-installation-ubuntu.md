@@ -1,6 +1,6 @@
 # Installation methods
 You can install Docker Engine in different ways,this instruction details the steps of installing Docker from Docker's apt repository.
-For other methods, refer to here["https://docs.docker.com/engine/install/ubuntu/"]
+For other methods, refer to [here](https://docs.docker.com/engine/install/ubuntu/)
 
 ## Install using the apt repository
 
