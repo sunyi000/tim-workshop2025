@@ -68,10 +68,9 @@ To run containers, we'll first need to pull some images to local computer.
     Deleted: sha256:1e8bb0620308641104e68d66f65c1e51de68d7df7240b8a99a251338631c6911
     ```
 
-    Alternatively, you can delete images by tag or by a partial image ID. In the previous example, the following would have been equivalent:
+    Alternatively, you can delete images by tag. In the previous example, the following would have been equivalent:
 
-     - `docker rmi 31`
-     - `docker rmi ubuntu:16.10`
+     - `docker rmi ubuntu:22.10`
 
     Running `docker images` should reflect the deleted image.
 
@@ -79,87 +78,58 @@ To run containers, we'll first need to pull some images to local computer.
 
 ### Running our container
 
-Using the fiji image we downloaded, we can run a our first container. 
-1. Let's do a very simple example. Run `docker run ubuntu:16.04 /bin/echo 'Hello world!'`
+Using the ubuntu image we downloaded, we can run a our first container. 
+1.Run `docker run ubuntu:22.10 /bin/echo 'Hello world!'`
 
     ```
-    $ docker run ubuntu:16.04 /bin/echo 'Hello world!'
+    $ docker run ubuntu:22.10 /bin/echo 'Hello world!'
     Hello world!
     ```
 
-    The `/bin/echo` command is a really simple application that just prints whatever you give it to the terminal. We passed it 'Hello world!', so it prints `Hello world!` to the terminal.
+    The `/bin/echo` command is an application that just prints whatever you give it to the terminal. We passed it 'Hello world!', so it prints `Hello world!` to the terminal.
 
     When you run the whole `docker run` command, it creates a new container from the image specified, then runs the command inside the container. From the previous example, the Docker container started, then ran the `/bin/echo` command in the container.
 
-2. Let's check what containers we have after running this. Run `docker ps`
+2. To check what containers we have after running this. Run `docker ps`
 
     ```
     $ docker ps
     CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
     ```
 
-    That's strange: no containers right? The `ps` command doesn't show stopped containers by default, add the `-a` flag.
+    no containers shown because the `ps` command doesn't show stopped containers by default, add the `-a` flag.
 
     ```
     $ docker ps -a
     CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS                          PORTS               NAMES
-    4fc37e27944a        ubuntu:16.04        "/bin/echo 'Hello ..."   About a minute ago   Exited (0) About a minute ago                       zen_swartz
+    4fc37e27944a        ubuntu:22.10        "/bin/echo 'Hello ..."   About a minute ago   Exited (0) About a minute ago                       zen_swartz
     ```
 
-    Okay, there's our container. But why is the status "Exited"?
+  Our container shows the status "Exited"
 
-    *Docker containers only run as long as the command it starts with is running.* In our example, it ran `/bin/echo` successfully, printed some output, then exited with status code 0 (which means no errors.) When Docker saw this command exit, the container stopped.
+    *Docker containers only run as long as the command it starts with is running.* 
+    In our example, it ran `/bin/echo` successfully, printed some output, then exited with status code 0 (which means no errors.) When Docker saw this command exit, the container stopped.
 
-3. Let's do something a bit more interactive. Run `docker run ubuntu:16.04 /bin/bash`
-
-    ```
-    $ docker run ubuntu:16.04 /bin/bash
-    $
-    ```
-
-    Notice nothing happened. When we run `docker ps -a`
+3. Let's do something a bit more interactive. Run `docker run -it ubuntu:22.10 /bin/bash`
 
     ```
-    $ docker ps -a
-    CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
-    654792eb403b        ubuntu:16.04        "/bin/bash"         4 seconds ago       Exited (0) 2 seconds ago                       distracted_minsky
-    ```
-
-    The container exited instantly. Why? We were running the `/bin/bash` command, which is an interactive program. However, the `docker run` command doesn't run interactively by default, therefore the `/bin/bash` command exited, and the container stopped.
-
-    Instead, let's add the `-it` flags, which tells Docker to run the command interactively with your terminal.
-
-    ```
-    $ docker run -it ubuntu:16.04 /bin/bash
+    $ docker run -it ubuntu:22.10 /bin/bash
     root@5fa68739793c:/# 
     ```
 
-    This looks a lot better. This means you're in a BASH session inside the Ubuntu container. Notice you're running as `root` and the container ID that follows.
+   This means you're in a BASH session inside the Ubuntu container. Notice you're running as `root` and the container ID that follows.
 
     You can now use this like a normal Linux shell. Try `pwd` and `ls` to look at the file system.
 
-    ```
-    root@5fa68739793c:/# pwd
-    /
-    root@5fa68739793c:/# ls
-    bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
-    ```
 
-    You can type `exit` to end the BASH session, terminating the command and stopping the container.
-
-    ```
-    root@5fa68739793c:/# exit
-    exit
-    $
-    ```
 4. By default your terminal remains attached to the container when you run `docker run`. What if you don't want to remain attached?
 
-    By adding the `-d` flag, we can run in detached mode, meaning the container will continue to run as long as the command is, but it won't print the output.
+   By adding the `-d` flag, we can run in detached mode, meaning the container will continue to run as long as the command is, but it won't print the output.
 
-    Let's run `/bin/sleep 3600`, which will run the container idly for 1 hour:
+   The following will run the container idly for 1 hour:
 
     ```
-    $ docker run -d ubuntu:16.04 /bin/sleep 3600
+    $ docker run -d ubuntu:22.10 /bin/sleep 3600
     be730b8c554b69383f30f71222b9ac264367c7454790dc2a4eb0cda33c0baa2a
     $
     ```
@@ -169,19 +139,13 @@ Using the fiji image we downloaded, we can run a our first container.
     ```
     $ docker ps
     CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-    be730b8c554b        ubuntu:16.04        "/bin/sleep 3600"    41 seconds ago      Up 40 seconds                           jovial_goldstine
+    be730b8c554b        ubuntu:22.10      "/bin/sleep 3600"    41 seconds ago      Up 40 seconds                           jovial_goldstine
     $
     ```
 
 5. Now that the container is running in the background, what if we want to reattach to it?
 
-    Conceivably, if this were something like a web server or other process where we might like to inspect logs while it runs, it'd be useful to run something on the container without interrupting the current process.
-
-    To this end, there is another command, called `docker exec`. `docker exec` runs a command within a container that is already running. It works exactly like `docker run`, except instead of taking an image ID, it takes a container ID.
-
-    This makes the `docker exec` command useful for tailing logs, or "SSHing" into an active container.
-
-    Let's do that now, running the following, passing the first few characters of the container ID:
+    Running the following, passing the first few characters of the container ID:
 
     ```
     $ docker exec -it be7 /bin/bash
@@ -190,36 +154,12 @@ Using the fiji image we downloaded, we can run a our first container.
 
     The container ID appearing at the front of the BASH prompt tells us we're inside the container. Once inside a session, we can interact with the container like any SSH session.
 
-    Let's list the running processes:
+   
+6. Instead of waiting 1 hour for this command to stop we'd like to stop the Docker container now.
 
-    ```
-    root@be730b8c554b:/# ps aux
-    USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-    root         1  0.2  0.0   4380   796 ?        Ss   15:41   0:00 /bin/sleep 3600
-    root         6  0.6  0.1  18240  3208 ?        Ss   15:41   0:00 /bin/bash
-    root        16  0.0  0.1  34424  2808 ?        R+   15:41   0:00 ps aux
-    root@be730b8c554b:/#
-    ```
+    We have the `docker stop` and the `docker kill` commands. The prior is a graceful stop, whereas the latter is a forceful one.
 
-    There we can see our running `/bin/sleep 3600` command. Whenever we're done, we can type `exit` to exit our current BASH session, and leave the container running.
-
-    ```
-    root@be730b8c554b:/# exit
-    exit
-    $ docker ps
-    CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-    be730b8c554b        ubuntu:16.04        "/bin/sleep 3600"   9 minutes ago       Up 9 minutes                            jovial_goldstine
-    $
-    ```
-
-    And finally checking `docker ps`, we can see the container is still running.
-
-6. Instead of waiting 1 hour for this command to stop (and the container exit), what if we'd like to stop the Docker container now?
-
-    To that end, we have the `docker stop` and the `docker kill` commands. The prior is a graceful stop, whereas the latter is a forceful one.
-
-    Let's use `docker stop`, passing it the first few characters of the container name we want to stop.
-
+   
     ```
     $ docker stop be73
     be73
@@ -243,7 +183,7 @@ Using the fiji image we downloaded, we can run a our first container.
     ```
     $ docker ps -a
     CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                      PORTS               NAMES
-    be730b8c554b        ubuntu:16.04        "/bin/sleep 600"         1 minute ago        Exited (137) 1 minute ago                       jovial_goldstine
+    be730b8c554b        ubuntu:22.10        "/bin/sleep 600"         1 minute ago        Exited (137) 1 minute ago                       jovial_goldstine
     $
     ```
 
