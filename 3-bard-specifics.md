@@ -24,8 +24,9 @@ RUN mkdir -p /etc/localaccount
 RUN for f in passwd shadow group gshadow ; do if [ -f /etc/$f ] ; then  cp /etc/$f /etc/localaccount; rm -f /etc/$f; ln -s /etc/localaccount/$f /etc/$f; fi; done
 
 ```
-
-Outside BARD, docker container runs as the USER specified in Dockerfile. BARD desktop allows users to log in via LDAP or OIDC, we need to run the docker container as the logged in user. The above commands makes the logged in user available inside the container.
+- The first RUN makes sure the icon images for all the applications in BARD are accessible.
+- The second RUN makes sure the application container starts as the logged in user. BARD desktop allows users to log in via LDAP or OIDC, we need to run the docker container as the logged in user. The above commands makes the logged in user available inside the container.
+- Outside BARD, docker container runs as the USER specified in Dockerfile. 
 
 
 ### Deploy app to BARD
