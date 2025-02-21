@@ -28,7 +28,7 @@ In XQuartz, open a terminal window and run
 Step 2: Configure Podman Desktop for X11 Forwarding
 
 Open Podman Desktop.
-Go to Settings > Machine and make sure your Podman virtual machine is running.
+Go to Settings and make sure your Podman virtual machine is running.
 Open a terminal and check if Podman is working
 `podman info`
 
