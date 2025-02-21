@@ -4,6 +4,7 @@ To make image analysis project, workflow as reproducible as possible, we create 
 
 To make things easier, the Dockerfile for Fiji is provided for this excercise. Have a look at the Dockerfile.
 
+## Linux:
 ### Exercise 1
 To build the fiji container, first go to the same location where Dockerfile located.
 
@@ -64,6 +65,35 @@ Here is the breakdown of the command
 - -e DISPLAY=$DISPLAY sets the DISPLAY environment variable inside the container to match host computer's display
 - -v mounts the X11 unix socket, allowing the container to communicate with the X server on your host.
 - fiji:01 specifies the docker image to run
+
+## MacOS
+
+#### Configure XQuartz
+1. Open XQuartz from Applications > Utilities > XQuartz.
+2. Go to Settings, on the Security tab, make sure "Allow connections from networkclients" is checked
+3. In XQuartz, open a terminal (XQuartz terminal) window and run
+
+` xhost + `
+
+#### Run a GUI Container with X11
+1. On Mac Terminal, Set the DISPLAY environment variable to point to your Mac’s X11 server:
+
+`export DISPLAY=host.docker.internal:0`
+
+This tells the container where to send the GUI output.
+
+2. Start a GUI-based container with the proper settings:
+
+`podman run -e DISPLAY=host.docker.internal:0 --rm `docker.io/library/test-fiji:latest `
+
+(replace test-fiji with your own name)
+
+The -e DISPLAY=host.docker.internal:0 tells the container where to send the GUI output.
+
+The --rm flag removes the container after exit.
+
+If host.docker.internal:0 doesn’t work, try:
+`export DISPLAY=$(ipconfig getifaddr en0):0`
 
 ### Excercise 4
 
