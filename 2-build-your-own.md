@@ -49,7 +49,7 @@ Here is the breakdown of the command
 - -v mounts the X11 unix socket, allowing the container to communicate with the X server on your host.
 - fiji:01 specifies the docker image to run
 
-## MacOS
+## MacOS (Tested on macOS Sequoia)
 
 ### Build container with Podman
 1. Start Podman Desktop
