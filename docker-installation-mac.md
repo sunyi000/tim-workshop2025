@@ -22,11 +22,9 @@ Download XQuartz from xquartz.org
 Install it by running the .dmg file and following the installation steps.
 After installation, restart your Mac.
 Open XQuartz from Applications > Utilities > XQuartz.
+Go to Settings, and on the Security tab, make sure "Allow connections from networkclients" is checked
 In XQuartz, open a terminal window and run
-` xhost +localhost `
-
-brew cask install docker xquartz
-brew install socat
+` xhost + `
 
 Step 2: Configure Podman Desktop for X11 Forwarding
 
@@ -42,20 +40,10 @@ Set the DISPLAY environment variable to point to your Mac’s X11 server:
 This tells the container where to send the GUI output.
 Start a GUI-based container with the proper settings:
 
-`podman run -e DISPLAY=host.docker.internal:0 --rm ghcr.io/linuxserver/firefox`
+`podman run -e DISPLAY=host.docker.internal:0 --rm `docker.io/library/test-fiji:latest `
 The -e DISPLAY=host.docker.internal:0 tells the container where to send the GUI output.
 The --rm flag removes the container after exit.
 
 If host.docker.internal:0 doesn’t work, try:
 `export DISPLAY=$(ipconfig getifaddr en0):0`
 
-socat TCP-LISTEN:6000,reuseaddr,fork UNIX-
-xhost + "$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')"
-
-Run the following command on xterm (provided by XQuartz):
-
-podman run \
-    --rm \
-    -e DISPLAY="$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')":0 \
-    -v $HOME/Downloads:/root/Downloads \
-    firefox
