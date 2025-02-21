@@ -26,3 +26,15 @@ RUN for f in passwd shadow group gshadow ; do if [ -f /etc/$f ] ; then  cp /etc/
 ```
 
 Outside BARD, docker container runs as the USER specified in Dockerfile. BARD desktop allows users to log in via LDAP or OIDC, we need to run the docker container as the logged in user. The above commands makes the logged in user available inside the container.
+
+
+### Deploy app to BARD
+This is usually done by BARD admin via API endpoints. FYI,do deploy Fiji to BARD. Here are the steps (only for admin)
+1. Push your image to a public registry, for example, dockerhub, quay.io etc
+2. pull the image from registry
+3. Run `docker inspect IMAGE_ID > fiji.json`
+4. Run `curl -X PUT -H 'Content-type: text/javascript https://BARD_URL/API/manager/image -d@fiji.json'
+
+### Contribute application to BARD or Request new app to be add to BARD
+1. Go to https://github.com/embl-cba/bard-containers
+2. Open a PR
