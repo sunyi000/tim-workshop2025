@@ -12,4 +12,36 @@ We use Podman to build docker containers on Mac.
    You can also follow the GUI to create your first Podman machine.
 
 3. Once Podman machine is started, from the Podman GUI interface, click "Create". This will guide you to build a docker container.
+4. For running GUI container with Podman, you will need to install XQuartz to forward the graphical display from the container to your Mac.
 
+## Install XQuarz
+Step 1: Install XQuartz
+Since macOS does not have native X11 support, you need to install XQuartz:
+
+Download XQuartz from xquartz.org
+Install it by running the .dmg file and following the installation steps.
+After installation, restart your Mac.
+Open XQuartz from Applications > Utilities > XQuartz.
+In XQuartz, open a terminal window and run
+` xhost +localhost `
+
+Step 2: Configure Podman Desktop for X11 Forwarding
+
+Open Podman Desktop.
+Go to Settings > Machine and make sure your Podman virtual machine is running.
+Open a terminal and check if Podman is working
+`podman info`
+
+Step 3: Run a GUI Container with X11
+Set the DISPLAY environment variable to point to your Mac’s X11 server:
+
+`export DISPLAY=host.docker.internal:0`
+This tells the container where to send the GUI output.
+Start a GUI-based container with the proper settings:
+
+`podman run -e DISPLAY=host.docker.internal:0 --rm ghcr.io/linuxserver/firefox`
+The -e DISPLAY=host.docker.internal:0 tells the container where to send the GUI output.
+The --rm flag removes the container after exit.
+
+If host.docker.internal:0 doesn’t work, try:
+`export DISPLAY=$(ipconfig getifaddr en0):0`
