@@ -54,35 +54,46 @@ Here is the breakdown of the command
 ### Build container with Podman
 1. Start Podman Desktop
 2. Make sure Podman machine is started.
-3. Once Podman machine is started, from the Podman GUI interface, click "Create". This will guide you to build a docker container.
-4. Select "Containerfile or Dockerfile"
-5. 'Context Path'  will be the folder which contains your Dockerfile.
-6. Give your image a name.For example. test-fiji
-7. For this Fiji example, leave ENV empty.
-8. Click Build and wait for it to finish.
-9. Once the build finishes, you should be able to see test-fiji images in your Podman desktop.
+3. Once Podman machine is started, from the Podman GUI interface, on the 'Containers' tab (the second on the left) click "Create". This will guide you to build a docker container.
+4. Select "Containerfile or Dockerfile" from the pop-up window.
+5. Select the Fiji Dockerfile from 'Containerfile path'.
+6. 'Build context directory' will be automatically populated with the folder contains your Dockerfile.
+7. Give your image a name. For example. test-fiji
+8. For this Fiji example, leave 'Build argument' empty.
+9. Select target platform in the 'Platform' section.
+   (select both aarch64 and x86_64 so that your container run on mac and linux)
+10. Click Build and wait for it to finish.
+12. Once the build finishes, click 'Done", you should be able to see test-fiji images in your Podman desktop.
+    Take a note of your image name, for exmaple, docker.io/library/test-fiji
 
-For Testing GUI container with Podman locally, you will need to install XQuartz to forward the graphical display from the container to your Mac.
+For Testing GUI container with Podman locally, you will need to use Terminal, and install XQuartz to forward the graphical display from the container to your Mac.
 
 #### Configure XQuartz
-1. Open XQuartz from Applications > Utilities > XQuartz.
+1. Open XQuartz from your Mac.
 2. Go to Settings, on the Security tab, make sure "Allow connections from networkclients" is checked
-3. In XQuartz, open a terminal (XQuartz terminal) window and run
+3. In XQuartz, open a terminal (XQuartz terminal) window and run the below command
 
 ` xhost + `
 
+You will see this text appear in your XQuartz terminal
+`access control disabled, clients can connect from any host`
+
 #### Run a GUI Container with X11
-1. On Mac Terminal, Set the DISPLAY environment variable to point to your Mac’s X11 server:
+Now, we will run the Fiji container from your local Mac.
+
+4. In Mac Terminal (not XQuartz terminal), Set the DISPLAY environment variable to point to your Mac’s X11 server:
 
 `export DISPLAY=host.docker.internal:0`
 
-This tells the container where to send the GUI output.
+This tells the container where to send the GUI output. Verify the value is set correctly by using the below command
 
-2. Start a GUI-based container with the proper settings:
+`echo $DISPLAY`
 
-`podman run -e DISPLAY=host.docker.internal:0 --rm `docker.io/library/test-fiji:latest `
+5. Start a GUI-based container with the proper settings:
 
-(replace test-fiji with your own name)
+`podman run -e DISPLAY=host.docker.internal:0 --rm docker.io/library/test-fiji:latest `
+
+(replace docker.io/library/test-fiji with your own name)
 
 The -e DISPLAY=host.docker.internal:0 tells the container where to send the GUI output.
 
