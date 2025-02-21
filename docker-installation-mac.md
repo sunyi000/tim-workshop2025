@@ -15,33 +15,36 @@ We use Podman to build docker containers on Mac.
 4. For running GUI container with Podman, you will need to install XQuartz to forward the graphical display from the container to your Mac.
 
 ## Install XQuarz
-Step 1: Install XQuartz
+
 Since macOS does not have native X11 support, you need to install XQuartz:
 
-Download XQuartz from xquartz.org
-Install it by running the .dmg file and following the installation steps.
-After installation, restart your Mac.
-Open XQuartz from Applications > Utilities > XQuartz.
-Go to Settings, and on the Security tab, make sure "Allow connections from networkclients" is checked
-In XQuartz, open a terminal window and run
+### Install XQuartz
+1. Download XQuartz from xquartz.org. 
+2. Install it by running the .dmg file and following the installation steps.
+3. After installation, restart your Mac.
+
+## Configure XQuartz
+1. Open XQuartz from Applications > Utilities > XQuartz.
+2. Go to Settings, on the Security tab, make sure "Allow connections from networkclients" is checked
+3. In XQuartz, open a terminal (XQuartz terminal) window and run
+
 ` xhost + `
 
-Step 2: Configure Podman Desktop for X11 Forwarding
-
-Open Podman Desktop.
-Go to Settings and make sure your Podman virtual machine is running.
-Open a terminal and check if Podman is working
-`podman info`
-
-Step 3: Run a GUI Container with X11
-Set the DISPLAY environment variable to point to your Mac’s X11 server:
+## Run a GUI Container with X11
+1. On Mac Terminal, Set the DISPLAY environment variable to point to your Mac’s X11 server:
 
 `export DISPLAY=host.docker.internal:0`
+
 This tells the container where to send the GUI output.
-Start a GUI-based container with the proper settings:
+
+2. Start a GUI-based container with the proper settings:
 
 `podman run -e DISPLAY=host.docker.internal:0 --rm `docker.io/library/test-fiji:latest `
+
+(replace test-fiji with your own name)
+
 The -e DISPLAY=host.docker.internal:0 tells the container where to send the GUI output.
+
 The --rm flag removes the container after exit.
 
 If host.docker.internal:0 doesn’t work, try:
