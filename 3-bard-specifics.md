@@ -1,6 +1,6 @@
 ## Add BARD Specifics
 
-### Excercise 4
+### Excercise 3
 
 So far we have Fiji container running locally, but what if we want to deploy it to the BARD?
 Let's go back to the Dockerfile.
