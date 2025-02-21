@@ -25,6 +25,9 @@ Open XQuartz from Applications > Utilities > XQuartz.
 In XQuartz, open a terminal window and run
 ` xhost +localhost `
 
+brew cask install docker xquartz
+brew install socat
+
 Step 2: Configure Podman Desktop for X11 Forwarding
 
 Open Podman Desktop.
@@ -45,3 +48,14 @@ The --rm flag removes the container after exit.
 
 If host.docker.internal:0 doesn’t work, try:
 `export DISPLAY=$(ipconfig getifaddr en0):0`
+
+socat TCP-LISTEN:6000,reuseaddr,fork UNIX-
+xhost + "$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')"
+
+Run the following command on xterm (provided by XQuartz):
+
+podman run \
+    --rm \
+    -e DISPLAY="$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')":0 \
+    -v $HOME/Downloads:/root/Downloads \
+    firefox
