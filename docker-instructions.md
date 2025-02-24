@@ -10,8 +10,8 @@ An introduction to the basics of using Docker.
 
 ### After Docker is installed
 
-1. [Running and managing Docker containers and images](1-running_containers.md)
-2. [Building your own images](2-building_images.md)
+1. [Running and managing Docker containers and images](1-basics-running-containers.md)
+2. [Building your own images](2-build-your-own.md)
 3. [Use container on BARD](3-bard-specifics.md)
 
 
