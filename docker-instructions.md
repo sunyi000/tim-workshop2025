@@ -5,8 +5,8 @@ An introduction to the basics of using Docker.
 ### Before you get started...
 
 1. Install Docker on your machine.
-- [Ubuntu](0-docker-installation-ubuntu.md)
-- MacOS
+- [Ubuntu](docker-installation-ubuntu.md)
+- [MacOS] (docker-installation-mac.md)
 
 ### After Docker is installed
 
